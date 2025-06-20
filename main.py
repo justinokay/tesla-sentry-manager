@@ -39,35 +39,6 @@ def is_valid_video(file_path):
     except Exception as e:
         print(f"🟥 Exception when probing {file_path}: {e}")
         return False
-def is_valid_video(file_path):
-    """Check if a video file exists and is a valid, playable media file."""
-    if not os.path.isfile(file_path):
-        print(f"🟥 File not found: {file_path}")
-        return False
-
-    try:
-        result = subprocess.run(
-            ['ffprobe', '-v', 'error', '-show_entries',
-             'format=duration', '-of', 'default=noprint_wrappers=1:nokey=1', str(file_path)],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
-        )
-        duration = result.stdout.strip()
-
-        if result.returncode != 0:
-            print(f"🟥 ffprobe failed with code {result.returncode} for: {file_path}")
-            print(f"stderr: {result.stderr.strip()}")
-            return False
-
-        if not duration or float(duration) == 0:
-            print(f"🟥 Zero duration or unreadable: {file_path}")
-            return False
-
-        print(f"🟩 Valid output exists: {file_path}")
-        return True
-
-    except Exception as e:
-        print(f"🟥 Exception when probing {file_path}: {e}")
-        return False
 
 def build_video_groups(input_dir):
     input_dir = Path(input_dir)
